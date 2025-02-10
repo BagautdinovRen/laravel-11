@@ -1,17 +1,33 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Jobs\TestJob;
+use App\Models\Article;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Redis;
 
 Route::get('/', function () {
-    return view('welcome');
+    dd(debug_backtrace());
+    foreach(User::with('articles')->find(1)->articles as $article){
+        dump($article->author->id);
+    }
+
+    return 'sfds';
+    /*dd();
+    //dd(\Illuminate\Support\Facades\Cache::store());
+   // \Illuminate\Support\Facades\Redis::set('you', 'hello sadaworld');
+    TestJob::dispatch();
+    \Illuminate\Support\Facades\Cache::put('you', 'hello sadaworld');
+    return view('welcome');*/
 });
 
 Route::get('/test', function () {
-    return 'test';
+    return \Illuminate\Support\Facades\Cache::get('you');
 });
 
 Route::get('/dashboard', function () {
+
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
